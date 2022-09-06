@@ -39,7 +39,7 @@ public class Ip extends AppCompatActivity {
     private InetAddress serverAddress = null;
     private static String msj;
     private DataOutputStream output;
-    boolean kv=false, al=false, ga=false, udps=true, tcps=false, alls=false;
+    boolean kv=false, al=false, ga=false, ye=false, udps=true, tcps=false, alls=false;
     private Handler mHandler = new Handler();
 
 
@@ -82,8 +82,7 @@ public class Ip extends AppCompatActivity {
         YB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*al=state(al, AB, AljRun);*/
-                Toast.makeText(Ip.this, "Habilitado en la siguiente versión",Toast.LENGTH_SHORT).show();
+                ye=state(ye, YB, YesRun);
             }
         });
 
@@ -96,12 +95,14 @@ public class Ip extends AppCompatActivity {
                     al=state(false, AB, AljRun);
                     kv=state(false, KB, KevRun);
                     ga=state(false, GB, GabRun);
+                    ye=state(false, YB, YesRun);
                 }else{
                     alls=false;
                     ALLB.setBackgroundColor(Color.rgb(128, 128, 128 ));
                     al=state(true, AB, AljRun);
                     kv=state(true, KB, KevRun);
                     ga=state(true, GB, GabRun);
+                    ye=state(true, YB, YesRun);
                 }
 
             }
@@ -151,12 +152,10 @@ public class Ip extends AppCompatActivity {
         }
         if(X){
             BT.setBackgroundColor(Color.rgb(0, 128, 0 ));
-            /*send("192.168.1.5", 52000);*/
             Run.run();
         }
         else {
             BT.setBackgroundColor(Color.rgb(128, 128, 128 ));
-            /*send("192.168.1.5", 52000);*/
             mHandler.removeCallbacks(Run);
         }
         return X;
@@ -224,10 +223,18 @@ public class Ip extends AppCompatActivity {
 
     }
 
+    private Runnable YesRun = new Runnable() {
+        @Override
+        public void run() {
+            send("http://yagk0ves.ddns.net/", 52000);
+            mHandler.postDelayed(this,5000);
+        }
+    };
+
     private Runnable KevRun = new Runnable() {
         @Override
         public void run() {
-            send("201.232.167.74", 52000);
+            send("54.234.51.56", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -235,7 +242,7 @@ public class Ip extends AppCompatActivity {
     private Runnable AljRun = new Runnable() {
         @Override
         public void run() {
-            send("179.12.194.117", 52000);
+            send("http://yagk0ale.ddns.net/", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -243,7 +250,7 @@ public class Ip extends AppCompatActivity {
     private Runnable GabRun = new Runnable() {
         @Override
         public void run() {
-            send("181.235.83.22", 52000);
+            send("http://yagk0gab.ddns.net/", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -271,10 +278,14 @@ public class Ip extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void update(Location location) {
-        msj="Lat: "+location.getLatitude()+" Lon: "+location.getLongitude()+" Date: "+ZonedDateTime.now();
+        String F = ZonedDateTime.now().toString();
+        String[] part1 = F.split("T");
+        String[] part2 = part1[1].split("\\.");
+        msj=""+location.getLatitude()+"%"+location.getLongitude()+"%"+part1[0]+"%"+part2[0];
     }
 
-    }
+
+}
 
 
 
