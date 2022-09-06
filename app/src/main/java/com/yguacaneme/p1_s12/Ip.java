@@ -226,7 +226,7 @@ public class Ip extends AppCompatActivity {
     private Runnable YesRun = new Runnable() {
         @Override
         public void run() {
-            send("http://yagk0ves.ddns.net/", 52000);
+            send("54.234.51.56", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -242,7 +242,7 @@ public class Ip extends AppCompatActivity {
     private Runnable AljRun = new Runnable() {
         @Override
         public void run() {
-            send("http://yagk0ale.ddns.net/", 52000);
+            send("3.92.184.133", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -250,7 +250,7 @@ public class Ip extends AppCompatActivity {
     private Runnable GabRun = new Runnable() {
         @Override
         public void run() {
-            send("http://yagk0gab.ddns.net/", 52000);
+            send("3.92.184.133", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
