@@ -226,7 +226,7 @@ public class Ip extends AppCompatActivity {
     private Runnable YesRun = new Runnable() {
         @Override
         public void run() {
-            send("44.202.155.183", 52000);
+            send("34.230.132.163", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -234,7 +234,7 @@ public class Ip extends AppCompatActivity {
     private Runnable KevRun = new Runnable() {
         @Override
         public void run() {
-            send("54.234.51.56", 52000);
+            send("44.207.244.176", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -242,7 +242,7 @@ public class Ip extends AppCompatActivity {
     private Runnable AljRun = new Runnable() {
         @Override
         public void run() {
-            send("54.211.76.219", 52000);
+            send("34.193.1.204", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
@@ -250,7 +250,7 @@ public class Ip extends AppCompatActivity {
     private Runnable GabRun = new Runnable() {
         @Override
         public void run() {
-            send("3.92.184.133", 52000);
+            send("54.208.54.187", 52000);
             mHandler.postDelayed(this,5000);
         }
     };
