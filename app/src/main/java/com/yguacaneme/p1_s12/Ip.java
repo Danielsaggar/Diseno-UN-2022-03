@@ -35,17 +35,15 @@ public class Ip extends AppCompatActivity {
 
     private Button KB, AB, GB, YB, UDPB, TCPB, ALLB;
     private DatagramSocket socket = null;
-    private Socket tcpsocket = null;
     private InetAddress serverAddress = null;
     private static String msj;
-    private DataOutputStream output;
-    boolean kv=false, al=false, ga=false, ye=false, udps=true, tcps=false, alls=false;
+    boolean kv=false, al=false, ga=false, ye=false, udps=true, tcps=false, alls=false, v1=false, v2=false;
     private Handler mHandler = new Handler();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        updateGPS();
+        updateGPS("1");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ip);
         KB=findViewById(R.id.KGB);
@@ -60,7 +58,12 @@ public class Ip extends AppCompatActivity {
         KB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                kv=state(kv, KB, KevRun);
+                if(v1){
+                    kv=state(kv, KB, KevRun);
+                }
+                if(v2){
+                    kv=state(kv, KB, KevRun2);
+                }
             }
 
         });
@@ -68,21 +71,37 @@ public class Ip extends AppCompatActivity {
         AB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                al=state(al, AB, AljRun);
+                if(v1){
+                    al=state(al, AB, AljRun);
+                }
+                if(v2){
+                    al=state(al, AB, AljRun2);
+                }
             }
         });
 
         GB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ga=state(ga, GB, GabRun);
+                if(v1){
+                    ga=state(ga, GB, GabRun);
+                }
+                if(v2){
+                    ga=state(ga, GB, GabRun2);
+                }
             }
         });
 
         YB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ye=state(ye, YB, YesRun);
+                if(v1){
+                    ye=state(ye, YB, YesRun);
+                }
+                if(v2){
+                    ye=state(ye, YB, YesRun2);
+                }
+
             }
         });
 
@@ -92,17 +111,34 @@ public class Ip extends AppCompatActivity {
                 if(!alls){
                     alls=true;
                     ALLB.setBackgroundColor(Color.rgb(0, 128, 0 ));
-                    al=state(false, AB, AljRun);
-                    kv=state(false, KB, KevRun);
-                    ga=state(false, GB, GabRun);
-                    ye=state(false, YB, YesRun);
+                    if(v1){
+                        al=state(false, AB, AljRun);
+                        kv=state(false, KB, KevRun);
+                        ga=state(false, GB, GabRun);
+                        ye=state(false, YB, YesRun);
+                    }
+                    if(v2){
+                        al=state(false, AB, AljRun2);
+                        kv=state(false, KB, KevRun2);
+                        ga=state(false, GB, GabRun2);
+                        ye=state(false, YB, YesRun2);
+                    }
                 }else{
                     alls=false;
                     ALLB.setBackgroundColor(Color.rgb(128, 128, 128 ));
-                    al=state(true, AB, AljRun);
-                    kv=state(true, KB, KevRun);
-                    ga=state(true, GB, GabRun);
-                    ye=state(true, YB, YesRun);
+                    if(v1){
+                        al=state(true, AB, AljRun);
+                        kv=state(true, KB, KevRun);
+                        ga=state(true, GB, GabRun);
+                        ye=state(true, YB, YesRun);
+                    }
+                    if(v2){
+                        al=state(true, AB, AljRun);
+                        kv=state(true, KB, KevRun);
+                        ga=state(true, GB, GabRun);
+                        ye=state(true, YB, YesRun);
+                    }
+
                 }
 
             }
@@ -111,16 +147,12 @@ public class Ip extends AppCompatActivity {
         TCPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(udps){
-                    tcps=true;
-                    udps=false;
+                if(!v2){
                     TCPB.setBackgroundColor(Color.rgb(0, 128, 0 ));
-                    UDPB.setBackgroundColor(Color.rgb(128, 128, 128 ));
+                    v2=true;
                 }else{
-                    tcps=false;
-                    udps=true;
-                    UDPB.setBackgroundColor(Color.rgb(0, 128, 0 ));
                     TCPB.setBackgroundColor(Color.rgb(128, 128, 128 ));
+                    v2=false;
                 }
             }
         });
@@ -128,16 +160,12 @@ public class Ip extends AppCompatActivity {
         UDPB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(udps){
-                    tcps=true;
-                    udps=false;
-                    TCPB.setBackgroundColor(Color.rgb(0, 128, 0 ));
-                    UDPB.setBackgroundColor(Color.rgb(128, 128, 128 ));
-                }else{
-                    tcps=false;
-                    udps=true;
+                if(!v1){
                     UDPB.setBackgroundColor(Color.rgb(0, 128, 0 ));
-                    TCPB.setBackgroundColor(Color.rgb(128, 128, 128 ));
+                    v1=true;
+                }else{
+                    UDPB.setBackgroundColor(Color.rgb(128, 128, 128 ));
+                    v1=false;
                 }
             }
         });
@@ -161,12 +189,12 @@ public class Ip extends AppCompatActivity {
         return X;
     }
 
-    private void send(String ip, int port){
+    private void send(String ip, int port, String vehicle){
         if(udps){
-            UDP(ip,port);
+            UDP(ip,port, vehicle);
         }
         if(tcps) {
-            TCP(ip,61000);
+            Toast.makeText(Ip.this, "No deberías estar aquí",Toast.LENGTH_SHORT).show();
         }
 
         
@@ -174,30 +202,8 @@ public class Ip extends AppCompatActivity {
 
     }
 
-    private void TCP(String ip, int port) {
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy gfgPolicy =
-                    new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(gfgPolicy);
-        }
-        try {
-            tcpsocket = new Socket(ip, port);
-            output = new DataOutputStream(tcpsocket.getOutputStream());
-            updateGPS();
-            output.writeUTF(msj);
-            output.flush();
-            tcpsocket.close();
-        } catch (IOException e) {
-            Toast.makeText(Ip.this, "e: "+e,Toast.LENGTH_SHORT).show();
-            Log.e("Error",e.toString());
-        }
 
-
-
-
-    }
-
-    private void UDP(String ip, int port) {
+    private void UDP(String ip, int port, String vehicle) {
         socket=null;
         serverAddress = null;
 
@@ -211,7 +217,7 @@ public class Ip extends AppCompatActivity {
             socket = new DatagramSocket(port);  //①
             // La ip de la otra parte
             serverAddress = InetAddress.getByName(ip);  //②
-            updateGPS();
+            updateGPS(vehicle);
             byte data[] = msj.getBytes();
             // 8888 aquí está el número de puerto del receptor
             DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, port);   //③
@@ -226,7 +232,15 @@ public class Ip extends AppCompatActivity {
     private Runnable YesRun = new Runnable() {
         @Override
         public void run() {
-            send("34.230.132.163", 52000);
+            send("34.230.132.163", 52000, "1");
+            mHandler.postDelayed(this,5000);
+        }
+    };
+
+    private Runnable YesRun2 = new Runnable() {
+        @Override
+        public void run() {
+            send("34.230.132.163", 52000, "2");
             mHandler.postDelayed(this,5000);
         }
     };
@@ -234,7 +248,15 @@ public class Ip extends AppCompatActivity {
     private Runnable KevRun = new Runnable() {
         @Override
         public void run() {
-            send("44.207.244.176", 52000);
+            send("44.207.244.176", 52000, "1");
+            mHandler.postDelayed(this,5000);
+        }
+    };
+
+    private Runnable KevRun2 = new Runnable() {
+        @Override
+        public void run() {
+            send("44.207.244.176", 52000, "2");
             mHandler.postDelayed(this,5000);
         }
     };
@@ -242,7 +264,15 @@ public class Ip extends AppCompatActivity {
     private Runnable AljRun = new Runnable() {
         @Override
         public void run() {
-            send("34.193.1.204", 52000);
+            send("34.193.1.204", 52000,"1");
+            mHandler.postDelayed(this,5000);
+        }
+    };
+
+    private Runnable AljRun2 = new Runnable() {
+        @Override
+        public void run() {
+            send("34.193.1.204", 52000,"2");
             mHandler.postDelayed(this,5000);
         }
     };
@@ -250,12 +280,20 @@ public class Ip extends AppCompatActivity {
     private Runnable GabRun = new Runnable() {
         @Override
         public void run() {
-            send("54.208.54.187", 52000);
+            send("54.208.54.187", 52000,"1");
             mHandler.postDelayed(this,5000);
         }
     };
 
-    public void updateGPS() {
+    private Runnable GabRun2 = new Runnable() {
+        @Override
+        public void run() {
+            send("54.208.54.187", 52000,"2");
+            mHandler.postDelayed(this,5000);
+        }
+    };
+
+    public void updateGPS(String ve) {
         //Permiso GPS
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Ip.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION )== PackageManager.PERMISSION_GRANTED) {
@@ -265,7 +303,7 @@ public class Ip extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onSuccess(Location location) {
-                    update(location);
+                    update(location,ve);
                 }
 
 
@@ -277,11 +315,12 @@ public class Ip extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void update(Location location) {
+    private void update(Location location, String vehicle) {
         String F = ZonedDateTime.now().toString();
         String[] part1 = F.split("T");
         String[] part2 = part1[1].split("\\.");
-        msj=""+location.getLatitude()+"%"+location.getLongitude()+"%"+part1[0]+"%"+part2[0];
+        msj=""+location.getLatitude()+"%"+location.getLongitude()+"%"+part1[0]+"%"+part2[0]+"%"+vehicle;
+        //Toast.makeText(Ip.this, "Mensaje: "+ msj,Toast.LENGTH_SHORT).show();
     }
 
 
